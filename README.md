@@ -73,6 +73,10 @@ pip install -r requirements.txt
 streamlit run Home.py
 ```
 
+The app defaults to light mode (set in `.streamlit/config.toml`). Users can
+still switch to dark mode or "Use system setting" via the "⋮" menu in the
+top-right corner → Settings.
+
 ## Deploying to Streamlit Community Cloud
 
 1. Push this whole folder to a GitHub repository.

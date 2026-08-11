@@ -1,10 +1,15 @@
+from pathlib import Path
+
 import streamlit as st
 
 from bucket_parser import parse_bucket_lower_bound, parse_bucket_midpoint
 from data_loader import get_question, load_card_rates, load_questions
 from scoring import recommend_cards
 
+LOGO_PATH = Path(__file__).parent.parent / "assets" / "keycards_logo.png"
+
 st.set_page_config(page_title="Credit Card Recommender", page_icon="💳", layout="centered")
+st.logo(str(LOGO_PATH))
 
 st.title("💳 Credit Card Recommender")
 st.write(
