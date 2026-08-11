@@ -8,16 +8,25 @@ bonus rules (merchant partnerships, minimum spend, monthly caps).
 
 ```
 credit_card_recommender/
-├── app.py              # Streamlit UI
-├── data_loader.py       # Loads card_rates.xlsx / questions.xlsx
-├── bucket_parser.py      # Converts dropdown bucket labels -> $ values
-├── scoring.py            # Core reward calculation & ranking logic
+├── Home.py                          # Entry point / homepage
+├── pages/
+│   └── 1_Credit_Card_Recommender.py # Recommender tool (shows in sidebar nav)
+├── data_loader.py                   # Loads card_rates.xlsx / questions.xlsx
+├── bucket_parser.py                 # Converts dropdown bucket labels -> $ values
+├── scoring.py                       # Core reward calculation & ranking logic
 ├── requirements.txt
 ├── data/
 │   ├── card_rates.xlsx   # One row per card (or per spend tier for tiered cards)
 │   └── questions.xlsx    # Question text + dropdown response options
 └── README.md
 ```
+
+This uses Streamlit's built-in multipage app support: any file placed in
+`pages/` automatically appears as a page in the sidebar, named after the
+filename (numbers/underscores are formatted away — `1_Credit_Card_Recommender.py`
+shows as "Credit Card Recommender"). To add a new tool later, just drop a
+new `.py` file into `pages/` — no extra config needed. Number-prefix the
+filename (e.g. `2_...py`) to control its order in the sidebar.
 
 ## How the recommendation logic works
 
@@ -61,7 +70,7 @@ column/question numbering stays consistent:
 
 ```bash
 pip install -r requirements.txt
-streamlit run app.py
+streamlit run Home.py
 ```
 
 ## Deploying to Streamlit Community Cloud
@@ -69,9 +78,16 @@ streamlit run app.py
 1. Push this whole folder to a GitHub repository.
 2. Go to [share.streamlit.io](https://share.streamlit.io), sign in with
    GitHub, and click "New app".
-3. Select your repo, branch, and set the main file path to `app.py`.
+3. Select your repo, branch, and set the main file path to `Home.py`.
 4. Click "Deploy" — Streamlit Cloud will install `requirements.txt`
    automatically and host the app at a public URL.
+
+## Adding more pages later
+
+Drop a new `.py` file into `pages/`, e.g. `pages/2_Credit_Card_Sentiments.py`.
+It will automatically appear in the sidebar. It can import `data_loader`,
+`bucket_parser`, and `scoring` the same way the recommender page does,
+since they live at the project root.
 
 ## Known simplifications (documented, not bugs)
 
