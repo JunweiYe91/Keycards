@@ -144,10 +144,6 @@ if submitted:
 
                 with st.expander("See breakdown"):
                     st.write(f"Estimated total monthly spend: ${result['total_monthly_spend']:,.0f}")
-                    st.write(
-                        "Qualifies for bonus rates: "
-                        + ("✅ Yes" if result["qualifies_for_bonus"] else "❌ No — below minimum spend, base rate only")
-                    )
                     if is_cashback:
                         st.write(f"Recurring reward (annualized): ${result['annual_recurring_reward']:,.2f}")
                         st.write(f"Travel & overseas reward (annual): ${result['travel_reward']:,.2f}")
