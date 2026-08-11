@@ -6,8 +6,24 @@ from bucket_parser import parse_bucket_lower_bound, parse_bucket_midpoint
 from data_loader import get_question, load_card_rates, load_questions
 from scoring import recommend_cards
 
-LOGO_PATH = Path(__file__).parent.parent / "assets" / "keycards_logo.png"
-PLACEHOLDER_PATH = Path(__file__).parent.parent / "assets" / "card_placeholder.png"
+PROJECT_ROOT = Path(__file__).parent.parent
+LOGO_PATH = PROJECT_ROOT / "assets" / "keycards_logo.png"
+PLACEHOLDER_PATH = PROJECT_ROOT / "assets" / "card_placeholder.png"
+
+
+def resolve_image_source(image_url: str):
+    """Return a usable image source for st.image(), or None if unavailable.
+
+    Supports full http(s) URLs as-is, and local paths (relative to the
+    project root, e.g. "assets/cards/uob_one_card.png") as set in
+    card_rates.xlsx.
+    """
+    if not image_url:
+        return None
+    if image_url.startswith("http://") or image_url.startswith("https://"):
+        return image_url
+    local_path = PROJECT_ROOT / image_url
+    return str(local_path) if local_path.exists() else None
 
 st.set_page_config(page_title="Credit Card Recommender", page_icon="💳", layout="centered")
 st.logo(str(LOGO_PATH))
@@ -130,9 +146,10 @@ if submitted:
 
             with img_col:
                 image_shown = False
-                if result["image_url"]:
+                image_src = resolve_image_source(result["image_url"])
+                if image_src:
                     try:
-                        st.image(result["image_url"], use_container_width=True)
+                        st.image(image_src, use_container_width=True)
                         image_shown = True
                     except Exception:
                         image_shown = False
