@@ -7,7 +7,6 @@ LOGO_PATH = Path(__file__).parent / "assets" / "keycards_logo.png"
 st.set_page_config(page_title="Credit Card Tools", page_icon="💳", layout="centered")
 st.logo(str(LOGO_PATH))
 
-st.image(str(LOGO_PATH), width=260)
 st.title("Welcome to KEYCARDS!")
 
 st.write(

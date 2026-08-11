@@ -121,9 +121,13 @@ def compute_annual_reward(card: pd.Series, profile: dict) -> dict:
 
     annual_total_reward = annual_recurring_reward + travel_reward
 
+    image_url = card.get("Image URL", "")
+    image_url = "" if pd.isna(image_url) else str(image_url).strip()
+
     return {
         "card_name": card["Credit Card Name"],
         "card_type": card["Card Type"],
+        "image_url": image_url,
         "monthly_reward": monthly_reward,
         "annual_recurring_reward": annual_recurring_reward,
         "travel_reward": travel_reward,

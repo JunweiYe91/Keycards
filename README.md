@@ -65,6 +65,16 @@ column/question numbering stays consistent:
   be freely edited — the app renders whatever text/options are there.
   **Do not change the question numbering (`Ques No`)** — the app maps
   specific question numbers (1–16) to specific scoring logic.
+- **Card images**: fill in the `Image URL` column in `card_rates.xlsx` with
+  a direct link to each card's image (must end in `.png`/`.jpg`/etc. and be
+  publicly accessible — hotlinking directly from bank websites often
+  doesn't work due to hotlink protection, and reproducing bank card art
+  may raise copyright/trademark concerns, so it's best to source images
+  you have the rights to use, e.g. your own screenshots, or an official
+  press kit). Leave a row blank and the app shows a placeholder image
+  instead. For tiered cards (e.g. UOB One Card's 3 rows), only the row
+  actually selected for the user's spend tier is shown, so it's simplest
+  to put the same image URL on every tier row of that card.
 
 ## Running locally
 

@@ -33,6 +33,9 @@ NUMERIC_RATE_COLUMNS = [
     "Conversion Fees",
 ]
 
+# Not a rate — passed through as-is (text), used to display card art.
+IMAGE_COLUMN = "Image URL"
+
 
 def load_card_rates(path: Optional[Path] = None) -> pd.DataFrame:
     path = path or DATA_DIR / "card_rates.xlsx"

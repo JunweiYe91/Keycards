@@ -7,6 +7,7 @@ from data_loader import get_question, load_card_rates, load_questions
 from scoring import recommend_cards
 
 LOGO_PATH = Path(__file__).parent.parent / "assets" / "keycards_logo.png"
+PLACEHOLDER_PATH = Path(__file__).parent.parent / "assets" / "card_placeholder.png"
 
 st.set_page_config(page_title="Credit Card Recommender", page_icon="💳", layout="centered")
 st.logo(str(LOGO_PATH))
@@ -125,22 +126,38 @@ if submitted:
             else:
                 value_label = f"{result['annual_total_reward']:,.0f} miles / year"
 
-            st.metric(label=f"#{i}  {result['card_name']}", value=value_label)
+            img_col, info_col = st.columns([1, 2])
 
-            with st.expander("See breakdown"):
-                st.write(f"Estimated total monthly spend: ${result['total_monthly_spend']:,.0f}")
-                st.write(
-                    "Qualifies for bonus rates: "
-                    + ("✅ Yes" if result["qualifies_for_bonus"] else "❌ No — below minimum spend, base rate only")
-                )
-                if is_cashback:
-                    st.write(f"Recurring reward (annualized): ${result['annual_recurring_reward']:,.2f}")
-                    st.write(f"Travel & overseas reward (annual): ${result['travel_reward']:,.2f}")
-                else:
-                    st.write(f"Recurring reward (annualized): {result['annual_recurring_reward']:,.0f} miles")
-                    st.write(f"Travel & overseas reward (annual): {result['travel_reward']:,.0f} miles")
-                    if result["conversion_fee"] > 0:
-                        st.write(f"Note: this card charges a ${result['conversion_fee']:,.0f} miles conversion fee.")
+            with img_col:
+                image_shown = False
+                if result["image_url"]:
+                    try:
+                        st.image(result["image_url"], use_container_width=True)
+                        image_shown = True
+                    except Exception:
+                        image_shown = False
+                if not image_shown:
+                    st.image(str(PLACEHOLDER_PATH), use_container_width=True)
+
+            with info_col:
+                st.metric(label=f"#{i}  {result['card_name']}", value=value_label)
+
+                with st.expander("See breakdown"):
+                    st.write(f"Estimated total monthly spend: ${result['total_monthly_spend']:,.0f}")
+                    st.write(
+                        "Qualifies for bonus rates: "
+                        + ("✅ Yes" if result["qualifies_for_bonus"] else "❌ No — below minimum spend, base rate only")
+                    )
+                    if is_cashback:
+                        st.write(f"Recurring reward (annualized): ${result['annual_recurring_reward']:,.2f}")
+                        st.write(f"Travel & overseas reward (annual): ${result['travel_reward']:,.2f}")
+                    else:
+                        st.write(f"Recurring reward (annualized): {result['annual_recurring_reward']:,.0f} miles")
+                        st.write(f"Travel & overseas reward (annual): {result['travel_reward']:,.0f} miles")
+                        if result["conversion_fee"] > 0:
+                            st.write(f"Note: this card charges a ${result['conversion_fee']:,.0f} miles conversion fee.")
+
+            st.divider()
 
         st.caption(
             "Estimates use the midpoint of your selected spending brackets against each "
