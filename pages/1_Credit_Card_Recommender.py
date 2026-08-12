@@ -147,14 +147,24 @@ if submitted:
             with img_col:
                 image_shown = False
                 image_src = resolve_image_source(result["image_url"])
+                error_detail = None
                 if image_src:
                     try:
                         st.image(image_src, use_container_width=True)
                         image_shown = True
-                    except Exception:
+                    except Exception as e:
                         image_shown = False
+                        error_detail = str(e)
                 if not image_shown:
                     st.image(str(PLACEHOLDER_PATH), use_container_width=True)
+                    # TEMPORARY DIAGNOSTIC — remove once images are confirmed working.
+                    with st.expander("Why no image? (debug)"):
+                        st.code(
+                            f"Raw value from Excel: {result['image_url']!r}\n"
+                            f"Resolved path/URL: {image_src!r}\n"
+                            f"Project root: {PROJECT_ROOT}\n"
+                            f"Error (if any): {error_detail}"
+                        )
 
             with info_col:
                 st.metric(label=f"#{i}  {result['card_name']}", value=value_label)
